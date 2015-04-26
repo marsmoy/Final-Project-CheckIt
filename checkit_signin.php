@@ -10,7 +10,7 @@
     <meta name="author" content="">
     <link rel="icon" href="http://getbootstrap.com/favicon.ico">
 
-    <title>Signin Template for Bootstrap</title>
+    <title>CheckIt SignIn</title>
 
     <!-- Bootstrap core CSS -->
     <link href="http://getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -35,7 +35,7 @@
 
     <div class="container">
 
-      <form class="form-signin" method="post" action="http://cscilab.bc.edu/~churo/project/profile.php">
+      <form class="form-signin" method="post" action="http://cscilab.bc.edu/~oconnonx/CheckIt/profile.php">
         <h2 class="form-signin-heading">Please sign in</h2>
         <label for="email" class="sr-only">Email address</label>
         <input type="email" id="email" name="email" class="form-control" placeholder="Email address" required="" autofocus="">
