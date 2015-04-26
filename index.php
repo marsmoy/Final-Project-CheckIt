@@ -10,19 +10,16 @@
 <head>
      <meta charset="utf-8" />
      <title>CheckIt</title>
+     <style>
+     	.news {
+			overflow: auto;
+			height: 300px;	
+			border: 3px groove blue
+ 		}
+ 		p { font-size: xx-small }
+ 	 </style>
+
   	 <script type="text/javascript">
-        function emailValidate(){
-			var theemail = document.getElementById("email1").value ;
-			if (theemail.length < 1) {
-				var errorrpt=document.getElementById("email1error");
-				errorrpt.innerHTML = "Please enter an email";
-				return false;
-			} 
-			var errorrpt=document.getElementById("email1error");
-			errorrpt.innerHTML = "";
-	
-			return true;
-		}
      
      	function validate(){
 			var validFirst = validateFirst();
@@ -113,7 +110,6 @@
 	<?php
        	displayHome();
 		displaynewAccountForm();
-		forgotPasswordForm();
 	?>
 </body>
 </html>
@@ -124,12 +120,18 @@
 		<form method="get">
 			<input type="submit" name="about" value="About CheckIt">
 		</form>
-		<form method="get" action="cscilab.bc.edu/~oconnonx/CheckIt/profile.php">
-			<input type="text" name="user" value="username">
-			<input type="text" name="pw" value="password">
-			<input type="submit" name="login" value="Login">
+		<form method='get' action='http://cscilab.bc.edu/~oconnonx/CheckIt/checkit_signin.php'>
+			<input type="submit" name="signin" value="Sign In">
 		</form>
-  
+		<form method='get'>
+			<input type="submit" name="create" value="Create Account">
+		</form
+
+  	<img src="images/stock.jpg" alt="main page" height="400" width="500"><br>
+		<p>
+			Image source: https://zacharydiamond.files.wordpress.com/2014/12/ski-mask-hacker-2.jpg?w=470&h=140&crop=1
+		</p>
+
 	<!--RSS below -->
 
 	<?php
@@ -150,20 +152,6 @@
 		}
 	}  
       
-    function forgotPasswordForm(){
-?>
-		<fieldset><legend><h4>Enter Information for New Password</h4></legend>
-			<br><br>
-			<form method = "get" action = "include/checkit_password.php" onsubmit = "return emailValidate();">
-				<label for="email">Please enter your email: </label>
-				<input type = "text" id = "email1" name = "email1">
-				<span class="ereport" id="email1error"></span>
-				<br><br>
-				<input type = "submit"  name = "submit_button" value = "Email New Password" >
-			</form>
-		</fieldset>
-		<?php
-}
 
     function displaynewAccountForm(){
       ?>

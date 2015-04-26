@@ -1,6 +1,6 @@
 <?php
 function connectToDB(){
-	$dbc= @mysqli_connect("localhost", "bowditcw", "H8zFAA2E", "csci2254") or
+	$dbc= @mysqli_connect("localhost", "bowditcw", "H8zFAA2E", "bowditcw") or
 					die("Connect failed: ". mysqli_connect_error());
 	return $dbc;
 }
