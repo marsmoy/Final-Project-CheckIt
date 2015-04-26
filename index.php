@@ -108,9 +108,15 @@
 <body>
 
 	<?php
-       	displayHome();
-		displaynewAccountForm();
-	?>
+
+	if (isset($_GET['about'])){
+		displayAbout();
+	}
+	if(isset($_GET['create'])){
+			displaynewAccountForm();
+	}
+	displayHome();
+		?>
 </body>
 </html>
 <?php
@@ -125,12 +131,17 @@
 		</form>
 		<form method='get'>
 			<input type="submit" name="create" value="Create Account">
-		</form
+		</form>
 
-  	<img src="images/stock.jpg" alt="main page" height="400" width="500"><br>
+  	<img src="https://castlehillview.files.wordpress.com/2015/01/stock-market-3.jpg" alt="main page" height="400" width="500"><br>
 		<p>
 			Image source: https://zacharydiamond.files.wordpress.com/2014/12/ski-mask-hacker-2.jpg?w=470&h=140&crop=1
 		</p>
+	<div>
+			<label>Some important links</label><br>
+			<a href="https://cs.bc.edu">Here is BC Comp Sci</a><br>
+			<a href="http://linkedin.com/in/jflah">Click here to network with me</a><br>
+			<a href="https://github.com/JFlah/Final-Project-CheckIt">Our github</a><br> </div>
 
 	<!--RSS below -->
 
@@ -185,14 +196,14 @@
 }
 function displayAbout(){
 ?>
-	<div>CheckIt is a simple idea. Unlike the messy, intimidating web pages<br>
+	<fieldset>CheckIt is a simple idea. Unlike the messy, intimidating web pages<br>
 	one will find on big banking websites meant to confuse and dazzle<br>
 	so they can steal your money, CheckIt is simple!<br><br>
 	Create your account, add your stocks. Once done, CheckIt will serve<br>
 	two basic functions for you. Buy, sell, and research. You can <br>
 	search prices, view the big indices, and keep track of your total value.<br>
 	I, for one, CheckIt every day!<br><br>
-	Copyright 2015 Bowditch, Chu, Flaherty & co.</div>
+	Copyright 2015 Bowditch, Chu, Flaherty & co.</fieldset>
 <?php
 }
 

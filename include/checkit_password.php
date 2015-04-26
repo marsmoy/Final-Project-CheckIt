@@ -24,7 +24,7 @@
 			sendPassword($email,$first,$dbc);
 			}
 		echo "<br><br>";
-		echo "<a href='http://cscilab.bc.edu/~bowditcw/checkit'>Back to Checkit</a>";
+		echo "<a href='http://cscilab.bc.edu/~oconnonx/CheckIt/'>Back to Checkit</a>";
 		}
 ?>
 
