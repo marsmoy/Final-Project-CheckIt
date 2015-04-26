@@ -1,5 +1,11 @@
 <!DOCTYPE html>
 
+<!-- =========================================== -->
+<!-- Welcome to CheckIt, your personal portfolio -->
+<!-- Flaherty			Bowditch			Chu  -->
+<!-- =========================================== -->
+
+
 <html lang="en">
 <head>
      <meta charset="utf-8" />
