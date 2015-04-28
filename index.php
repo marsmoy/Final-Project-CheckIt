@@ -117,6 +117,12 @@
 	}
 	displayHome();
 		?>
+
+<input type="text" name="textBox" id="textBox" placeholder="Send a message..."/>
+<button onclick="sendMessage()">Send</button>
+<div id="chat"></div>
+<script src="http://cdn.pubnub.com/pubnub-3.7.1.min.js"></script>
+<script src="/~oconnonx/CheckIt/js/main.js"></script>
 </body>
 </html>
 <?php
