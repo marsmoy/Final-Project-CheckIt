@@ -48,7 +48,6 @@
 	}
 	else echo 'No Name Entered';
 	echo "<br><br>";
-	echo "<a href='http://cscilab.bc.edu/~oconnonx/CheckIt/index.php'>Back to Home Page</a>";
 ?>
 
 </body>
@@ -67,7 +66,7 @@ function handleform($dbc,$first,$last,$email,$password){
 		echo "<br>Oops! Something went wrong";
 	else
 		echo "<br>Congratulations on joining CheckIt!";
-	echo "<a href='http://cscilab.bc.edu/~oconnonx/CheckIt/index.phpt'>Back to Home Page</a>";
+	echo "<a href='http://cscilab.bc.edu/~oconnonx/CheckIt/index.php'>Back to Home Page</a>";
 
 }
 ?>

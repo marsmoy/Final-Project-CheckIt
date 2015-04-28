@@ -12,18 +12,40 @@ include ('include/dbconn.php');
 <head>
      <meta charset="utf-8" />
      <title>CheckIt</title>
+     <script>
+           function validate(){
+            var validSearch = validateSearch();
+            if (!validSearch) return false;
+
+            return true;
+          }
+
+          function validateSearch(){
+            var thesearch= document.getElementById("search").value ;
+            
+            if (thesearch.length < 1 || thesearch=='Enter stock ticker') {
+              var errorrpt=document.getElementById("searcherror");
+              errorrpt.innerHTML = "Please enter a stock ticker";
+              return false;
+            } 
+            var errorrpt=document.getElementById("searcherror");
+            errorrpt.innerHTML = "";
+        
+            return true;
+          }
+      </script>
 </head>
 <body>
 	<?php
 		init();
-		stockInfo("GOOG");
+		stockInfo("ANET");
 	?>
 </body>
 </html>
 <?php
 	function init(){
 		$dbc = connectToDB();
-// 		print_r ($_POST);		
+// 		print_r ($_POST);
 		$email = $_POST['email'];
 		$password = $_POST['password'];
 		if (validProfile($password,$email,$dbc)) {
@@ -48,27 +70,27 @@ include ('include/dbconn.php');
 	}
 	function stockInfo($stock_name) {
   		$page = 'http://finance.yahoo.com/q?s=' . $stock_name;
-      	$content = file_get_contents($page);
-      	$stocklower = strtolower($stock_name);
-      	$value_pattern = "!yfs_l84_$stocklower\">([0-9,]+\.[0-9]*)!";
-      	$change_pattern = "!yfs_p43_$stocklower\">\\([0-9]{1,2}\\.[0-9]{2}%\\)!";
+      $content = file_get_contents($page);
+      $stocklower = strtolower($stock_name);
+      $value_pattern = "!yfs_l84_$stocklower\">([0-9,]+\.[0-9]*)!";
+      $change_pattern = "!yfs_p43_$stocklower\">\\([0-9]{1,2}\\.[0-9]{2}%\\)!";
       
     	preg_match_all($value_pattern, $content, $value_res);
     	preg_match_all($change_pattern, $content, $change_res);
       
-      	echo "The entire match for price is: " . htmlentities($value_res[0][0]) . "<br>\n";
-      	echo "Price is: " . htmlentities($value_res[1][0]) . "<br />\n";
+      echo "The entire match for price is: " . htmlentities($value_res[0][0]) . "<br>\n";
+      echo "Price is: " . htmlentities($value_res[1][0]) . "<br />\n";
 
-      	echo "The entire match for % change is: " . htmlentities($change_res[0][0]) . "<br>\n";
-      	$change =  htmlentities($change_res[0][0]);
-      	$change1 = substr($change,-7);
-		$x = strpos($change1,"(");
-      	if($x===FALSE) {
-      		$change1 = "(" . $change1;
-      	}
+      echo "The entire match for % change is: " . htmlentities($change_res[0][0]) . "<br>\n";
+      $change =  htmlentities($change_res[0][0]);
+      $change1 = substr($change,-7);
+		  $x = strpos($change1,"(");
+      if($x===FALSE) {
+      	$change1 = "(" . $change1;
+      }
 
-      	//$change2 = substr($change1,1,6)
-      	echo "Percent change is: $change1";
+      //$change2 = substr($change1,1,6)
+      echo "Percent change is: $change1";
     }
     
       function displayProfile($dbc,$email,$password) {
@@ -100,8 +122,16 @@ include ('include/dbconn.php');
         }
         
         $email = $row['email'];
-       // echo "$first $last $cash $stocks $email";
+        echo "$first $last $cash $stocks $email";
+
+        ?>
         
+        <form method='get' action='http://cscilab.bc.edu/~oconnonx/CheckIt/include/stocksearch.php' onsubmit='return validate();'>
+          <input id='search' type='text' name='search' value='Enter stock ticker'><br>
+          <span class="ereport" id="searcherror"></span><br>
+          <input type='submit' name='submit_search' value='Search'>
+        </form>
         
+        <?php
       }
 ?>

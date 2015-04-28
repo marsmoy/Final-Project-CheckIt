@@ -49,7 +49,7 @@
 		}
 		
 		function validateLast(){
-			var thename= document.getElementById("last").value ;
+			var thename= document.getElementById("last").value;
 			
 			if (thename.length < 1) {
 				var errorrpt=document.getElementById("lasterror");
