@@ -22,8 +22,8 @@ function init(){
       $email = $_COOKIE[$cookie_email];
       $password = $_COOKIE[$cookie_pass];
     } else {
-      echo "<a href='http://cscilab.bc.edu/~oconnonx/CheckIt/checkit_signin.php?signin=Sign+In'>Invalid Password back to Login Page</a>";
-      die();
+        $email = $_POST['email'];
+        $password = $_POST['password'];
     }
     $dbc = connectToDB();
     
@@ -50,31 +50,29 @@ function init(){
   }
   function stockInfo($stock_name) {
       $page = 'http://finance.yahoo.com/q?s=' . $stock_name;
-      $content = file_get_contents($page);
-      $stocklower = strtolower($stock_name);
-      $value_pattern = "!yfs_l84_$stocklower\">([0-9,]+\.[0-9]*)!";
-      $change_pattern = "!yfs_p43_$stocklower\">\\([0-9]{1,2}\\.[0-9]{2}%\\)!";
+        $content = file_get_contents($page);
+        $stocklower = strtolower($stock_name);
+        $value_pattern = "!yfs_l84_$stocklower\">([0-9,]+\.[0-9]*)!";
+        $change_pattern = "!yfs_p43_$stocklower\">\\([0-9]{1,2}\\.[0-9]{2}%\\)!";
       
       preg_match_all($value_pattern, $content, $value_res);
       preg_match_all($change_pattern, $content, $change_res);
       
-      echo "The entire match for price is: " . htmlentities($value_res[0][0]) . "<br>\n";
-      echo "Price is: " . htmlentities($value_res[1][0]) . "<br />\n";
+    $price = htmlentities($value_res[1][0]);
+  
+        $change =  htmlentities($change_res[0][0]);
+        $change1 = substr($change,-7);
+    $x = strpos($change1,"(");
+        if($x===FALSE) {
+          $change1 = "(" . $change1;
+        }
 
-      echo "The entire match for % change is: " . htmlentities($change_res[0][0]) . "<br>\n";
-      $change =  htmlentities($change_res[0][0]);
-      $change1 = substr($change,-7);
-      $x = strpos($change1,"(");
-      if($x===FALSE) {
-        $change1 = "(" . $change1;
-      }
+        return array ($price,$change1);
 
-      //$change2 = substr($change1,1,6)
-      echo "Percent change is: $change1";
     }
     
       function displayProfile($dbc,$email,$password) {
-        $sha_password = sha1($password);
+       $sha_password = sha1($password);
         $profile_query = "select * from checkit where email = '$email' and password = '$sha_password'";
         $result = performQuery($dbc,$profile_query);
         $row = mysqli_fetch_array($result, MYSQLI_ASSOC);
@@ -83,36 +81,131 @@ function init(){
         $last = $row['last'];
         $cash = $row['cash'];
         $stocks = $row['stocks'];
-        $stock_array = explode(" ",$stocks);
+        if(strcmp($stocks,"")==0){
+          echo "You do not own any stocks!";
+        }
+        else{
+           $stock_array = explode(" ",$stocks);
         $stock_name = array();
-        $stock_amount = array();
-        
+        $stock_owned = array();
         $i = 1;
         foreach($stock_array as $value){
           if($i%2==0){
-            $stock_price[] = $value;
+            $stock_owned[] = $value;
           }
           else{
             $stock_name[] = $value;
           }
           $i= $i+1;
-        }
-        foreach($stock_name as $value){
-          echo "$value";
-        }
-        
-        $email = $row['email'];
-        echo "$first $last $cash $stocks $email";
+        }$name_price = array();
+          $name_change = array();
+          foreach($stock_name as $value){
+            $type = stockInfo($value);
+            $name_price[$value] = $type[0];
+            $name_change[$value] = $type[1];
+          }
 
-        ?>
-        
-        <form method='get' action='http://cscilab.bc.edu/~oconnonx/CheckIt/include/stocksearch.php' onsubmit='return validate();'>
-          <input id='search' type='text' name='search' value='Enter stock ticker'><br>
-          <span class="ereport" id="searcherror"></span><br>
-          <input type='submit' name='submit_search' value='Search'>
+      echo "Hello $first $last!<br>\n";
+
+      ?>
+      <fieldset>
+      <legend>Stock Table</legend>
+      <table>
+        <tr>
+          <th>Ticker</th>
+          <th>Value</th>
+          <th>Change</th>
+          <th>Amount Owned</th>
+        </tr>
+      <?php
+      $sum = 0;
+      $total_change = 0;
+      for ( $i = 0; $i < sizeof($stock_name); $i++ ) {
+        $stock = $stock_name[$i];
+        $sum = $sum + ($name_price[$stock])*($stock_owned[$i]);
+        $total_change = $total_change + substr($name_change[$stock],1,strlen($name_change[$stock])-1);
+        echo "<tr>
+              <td>$stock</td><td>$name_price[$stock]</td><td>$name_change[$stock]</td><td>$stock_owned[$i]</td>
+            </tr>\n";
+      }
+      $average_change = $total_change/sizeof($stock_name);
+      $average_change = substr($average_change,0,4);
+      ?>
+
+      </table>
+      </fieldset>
+      <?php
+
+      echo "
+        <br><form method='get' action='./index.php'>
+            <input type='submit' value='Home Page'>
         </form>
-        
+      ";
+      
+      echo "
+      <br><form method='get' action='./include/clearcookies.php'>
+        <input type='submit' name='logout' value='Logout'>
+      </form>
+      ";
+        $name_price = array();
+          $name_change = array();
+          foreach($stock_name as $value){
+            $type = stockInfo($value);
+            $name_price[$value] = $type[0];
+            $name_change[$value] = $type[1];
+          }
+
+      ?>
+    
+      <?php
+      
+      
+      echo "Portfolio Value: &#36;$sum<br>\n";
+      echo "Average Change: $average_change&#37;<br>\n";
+        }
+       
+        //print_r($stock_name);
+      ?>
+    Buy Stock
+      <form method='get' action='include/stocksearch.php' onsubmit='return validate2();'>
+        <input type="hidden" name="email" value= "<?php echo $email ?>">
+        <input type="hidden" name="cash" value= "<?php echo $cash ?>">
+            <input id='buy_query' type='text' name='buy_query' placeholder='Enter stock ticker'><br>
+            <span class="ereport" id="searcherror2"></span><br>
+            <input type='submit' name='buy_search' value='Buy'>
+        </form>
+        <br><br>
+        Sell Stock
+      <form method='get' action='include/stocksearch.php' onsubmit='return validate3();'>
+        <input type="hidden" name="email" value= "<?php echo $email ?>">
+        <input type="hidden" name="cash" value= "<?php echo $cash ?>">
+        <input type="hidden" name="stocks" value= "<?php echo $stocks ?>">
+            <input id='sell_query' type='text' name='sell_query' placeholder='Enter stock ticker'><br>
+            <span class="ereport" id="searcherror3"></span><br>
+            <input type='submit' name='sell_search' value='Sell'>
+        </form>
+        <br><br>
+        Search Stock
+        <form method='get' action='include/stocksearch.php' onsubmit='return validate();'>
+          <input type="hidden" name="email" value= "<?php echo $email ?>">
+            <input id='search' type='text' name='search' placeholder='Enter stock ticker'><br>
+            <span class="ereport" id="searcherror"></span><br>
+            <input type='submit' name='submit_search' value='Search'>
+        </form><br>
+
+        <form method='get' action='include/cash_ops.php'>
+            <input type="text" name="amount" placeholder="Enter amount">
+            <input type="submit" name="deposit" value="Deposit">
+            <input type="submit" name="withdraw" value="Withdraw">
+            <input type="hidden" name="cash" value= "<?php echo $cash ?>">
+            <input type="hidden" name="email" value="<?php echo $email ?>">
+
+        </form>
         <?php
+          
+    echo "<br>Cash: &#36;$cash<br>\n";
+        
+          
       }
 ?>
 
@@ -147,12 +240,53 @@ function init(){
         
             return true;
           }
+          
+          function validate2(){
+            var validSearch = validateSearch2();
+            if (!validSearch) return false;
+
+            return true;
+          }
+
+          function validateSearch2(){
+            var thesearch= document.getElementById("buy_query").value ;
+            
+            if (thesearch.length < 1 || thesearch=='Enter stock ticker') {
+              var errorrpt=document.getElementById("searcherror2");
+              errorrpt.innerHTML = "Please enter a stock ticker";
+              return false;
+            } 
+            var errorrpt=document.getElementById("searcherror2");
+            errorrpt.innerHTML = "";
+        
+            return true;
+          }
+          
+          function validate3(){
+            var validSearch = validateSearch3();
+            if (!validSearch) return false;
+
+            return true;
+          }
+
+          function validateSearch3(){
+            var thesearch= document.getElementById("sell_query").value ;
+            
+            if (thesearch.length < 1 || thesearch=='Enter stock ticker') {
+              var errorrpt=document.getElementById("searcherror3");
+              errorrpt.innerHTML = "Please enter a stock ticker";
+              return false;
+            } 
+            var errorrpt=document.getElementById("searcherror3");
+            errorrpt.innerHTML = "";
+        
+            return true;
+          }
       </script>
 </head>
 <body>
-	<?php
-		init();
-		stockInfo("ANET");
-	?>
+  <?php
+    init();
+  ?>
 </body>
 </html>

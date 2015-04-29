@@ -132,12 +132,24 @@
 		<form method="get">
 			<input type="submit" name="about" value="About CheckIt">
 		</form>
+
+		<?php
+		if (!isset($_COOKIE['email'])){ echo "
+
 		<form method='get' action='http://cscilab.bc.edu/~oconnonx/CheckIt/checkit_signin.php'>
-			<input type="submit" name="signin" value="Sign In">
+			<input type='submit' name='signin' value='Sign In'>
 		</form>
 		<form method='get'>
-			<input type="submit" name="create" value="Create Account">
+			<input type='submit' name='create' value='Create Account'>
 		</form>
+		";
+		} else { echo "
+			<form action='profile.php'>
+				<input type='submit' name='signin' value='Profile'>
+			</form> ";
+		}
+
+		?>
 
   	<img src="https://castlehillview.files.wordpress.com/2015/01/stock-market-3.jpg" alt="main page" height="400" width="500"><br>
 		<p>
