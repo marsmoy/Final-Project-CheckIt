@@ -39,17 +39,20 @@ function getCookie(cname) {
 function sendMessage(){
 	var textBox = document.getElementById('textBox');
 	var sendMsg = textBox.value;
-	var user    = "Anonymous"; 
-	// Check cookies
-    var theuser = getCookie("email");
-    var newuser = theuser.substring(0, 4);
-	if (getCookie("email")!="") user=newuser;
-	else { user = "Anonymous"; }
-	var payload = {text:sendMsg, username:user};
-	pubnub.publish({                                     
-         channel : channelName,
-         message : payload,
-         callback: function(m){ console.log(m) }
-    })
+    if(sendMsg != ""){
+    	var user    = "Anonymous"; 
+    	// Check cookies
+        var theuser = getCookie("email");
+        var newuser = theuser.substring(0, 4);
+    	if (getCookie("email")!="") user=newuser;
+    	else { user = "Anonymous"; }
+    	var payload = {text:sendMsg, username:user};
+    	pubnub.publish({                                     
+             channel : channelName,
+             message : payload,
+             callback: function(m){ console.log(m) }
+        })
+    }
+    textBox.value = "";
 }
 initPN();

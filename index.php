@@ -10,6 +10,7 @@
 <head>
      <meta charset="utf-8" />
      <title>CheckIt</title>
+     <link rel="stylesheet" type="text/css" href="CSS/check.css">
      <style>
      	.news {
 			overflow: auto;
@@ -118,11 +119,6 @@
 	displayHome();
 		?>
 
-<input type="text" name="textBox" id="textBox" placeholder="Send a message..."/>
-<button onclick="sendMessage()">Send</button>
-<div id="chat"></div>
-<script src="http://cdn.pubnub.com/pubnub-3.7.1.min.js"></script>
-<script src="/~oconnonx/CheckIt/js/main.js"></script>
 </body>
 </html>
 <?php
@@ -147,9 +143,23 @@
 			<form action='profile.php'>
 				<input type='submit' name='signin' value='Profile'>
 			</form> ";
+				echo "
+      		<br><form method='get' action='./include/clearcookies.php'>
+        		<input type='submit' name='logout' value='Logout'>
+      		</form>";
 		}
 
 		?>
+
+		<div id="right">
+		<h5> Your Chat Feed Today! </h5>
+		<input type="text" name="textBox" id="textBox" placeholder="Send a message..."/>
+		<button onclick="sendMessage()">Send</button>
+		<div id="chat"></div>
+
+		</div>
+		<script src="http://cdn.pubnub.com/pubnub-3.7.1.min.js"></script>
+		<script src="/~oconnonx/CheckIt/js/main.js"></script>
 
   	<img src="https://castlehillview.files.wordpress.com/2015/01/stock-market-3.jpg" alt="main page" height="400" width="500"><br>
 		<p>

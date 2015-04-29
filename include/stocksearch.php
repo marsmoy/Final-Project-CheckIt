@@ -9,8 +9,9 @@ if (isset($_GET['buy_query'])){
 if (isset($_GET['sell_query'])){
   $sell_stock = $_GET['sell_query'];
   }
-
+if (isset($_GET['cash'])){
   $cash = $_GET['cash'];
+}
 
 ?>
 
@@ -97,7 +98,7 @@ if (isset($_GET['sell_query'])){
 </html>
 <?php
   function isValid($stock_name) {
-    $page = 'http://finance.yahoo.com/q?s=' . $stock_name;
+      $page = 'http://finance.yahoo.com/q?s=' . $stock_name;
       $content = file_get_contents($page);
       $stocklower = strtolower($stock_name);
       $value_pattern = "!yfs_l84_$stocklower\">([0-9,]+\.[0-9]*)!";
@@ -162,6 +163,7 @@ if (isset($_GET['sell_query'])){
     function searchDisplay($stock){
       $tuple = stockInfo($stock);
       echo "The stock $stock is $tuple[0] with a change of $tuple[1]";
+      echo "<br><a href='../profile.php'>Return to your Profile</a>";
       }
       
     function buyDisplay($stock,$email){
@@ -189,13 +191,13 @@ if (isset($_GET['sell_query'])){
       echo "The stock $stock is $tuple[0] with a change of $tuple[1]";
       $previously_owned = false;
     foreach($stock_name as $name){
-      echo $name;
       if(strcmp($name, $stock) == 0){
         $previously_owned = true;
       }
     }
     if(!$previously_owned){
-      echo "<br>You cannot sell $stock because you do not own any stock.";
+      echo "<br>You cannot sell $stock because you do not own any shares.";
+      echo "<br><a href='../profile.php'>Return to your Profile</a>";
       }
     else{
         ?>

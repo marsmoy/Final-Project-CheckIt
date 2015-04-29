@@ -9,7 +9,9 @@ include ('dbconn.php');
 <body>
 
 <?php
-	$cash = $_GET['cash'];
+	if (isset($_GET['cash'])){
+		$cash = $_GET['cash'];
+	}
 
 	$dbc= @mysqli_connect("localhost", "bowditcw", "H8zFAA2E", "bowditcw") or
 					die("Connect failed3: ". mysqli_connect_error());
@@ -75,7 +77,7 @@ function createAccount($dbc,$first,$last,$email,$password){
 		echo "<br>Oops! Something went wrong";
 	else
 		echo "<br>Congratulations on joining CheckIt!";
-	echo "<a href='http://cscilab.bc.edu/~oconnonx/CheckIt/index.phpt'>Back to Home Page</a>";
+	echo "<a href='http://cscilab.bc.edu/~oconnonx/CheckIt/index.php'>Back to Home Page</a>";
 
 }
 
@@ -123,7 +125,6 @@ function updateBuy($dbc,$buy,$stock,$email) {
 		$j++;
         }
 		if($previously_owned){
-          	echo "test1";
 			$updated_amount = $stock_owned[$index] + $buy;
 			$stock_owned[$index] = $updated_amount;
 			$updated_stocks = "";
@@ -133,16 +134,15 @@ function updateBuy($dbc,$buy,$stock,$email) {
 			$updated_stocks =substr($updated_stocks,0,strlen($updated_stocks)-1);
 			}
 		else if(strcmp($stocks,"")==0){
-          	echo "test2";
 			$updated_stocks = $stock . " " . $buy;
 		}
 		else{
-          echo "test3";
 			$updated_stocks = $stocks . " " . $stock . " " . $buy;
 			}
 		$update_query = "UPDATE checkit SET stocks='$updated_stocks',cash = '$updated_cash' WHERE email = '$email'";
 		$result2 = performQuery($dbc,$update_query);
-		//header("Location: ../profile.php");
+		echo "Congratulations, you successfully purchased $buy shares of $stock";
+		echo "<br><a href='../profile.php'>Return to your Profile</a>";
 			}
 }
 		
@@ -206,7 +206,8 @@ function updateSell($dbc,$sell,$stock,$email) {
 	}
 		$update_query = "UPDATE checkit SET stocks='$updated_stocks',cash = '$updated_cash' WHERE email = '$email'";
 		$result2 = performQuery($dbc,$update_query);
-		header("Location: ../profile.php");		
+		echo "Congratulations, you successfully sold $sell shares of $stock";
+		echo "<br><a href='../profile.php'>Return to your Profile</a>";		
 }
 		
 function stockInfo($stock_name) {

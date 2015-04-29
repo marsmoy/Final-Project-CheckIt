@@ -174,7 +174,19 @@ function init(){
             <span class="ereport" id="searcherror2"></span><br>
             <input type='submit' name='buy_search' value='Buy'>
         </form>
-        <br><br>
+        <br>
+
+
+    <div id="right">
+      <h5> Your Chat Feed Today! </h5>
+      <input type="text" name="textBox" id="textBox" placeholder="Send a message..."/>
+      <button onclick="sendMessage()">Send</button>
+      <div id="chat"></div>
+    </div>
+      <script src="http://cdn.pubnub.com/pubnub-3.7.1.min.js"></script>
+      <script src="/~oconnonx/CheckIt/js/main.js"></script>
+
+        <br>
         Sell Stock
       <form method='get' action='include/stocksearch.php' onsubmit='return validate3();'>
         <input type="hidden" name="email" value= "<?php echo $email ?>">
@@ -219,6 +231,7 @@ function init(){
 <head>
      <meta charset="utf-8" />
      <title>CheckIt</title>
+     <link rel="stylesheet" type="text/css" href="CSS/check.css">
      <script>
            function validate(){
             var validSearch = validateSearch();
