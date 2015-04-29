@@ -41,7 +41,9 @@ function sendMessage(){
 	var sendMsg = textBox.value;
 	var user    = "Anonymous"; 
 	// Check cookies
-	if (getCookie("email")!="") user=getCookie("email");
+    var theuser = getCookie("email");
+    var newuser = theuser.substring(0, 4);
+	if (getCookie("email")!="") user=newuser;
 	else { user = "Anonymous"; }
 	var payload = {text:sendMsg, username:user};
 	pubnub.publish({                                     
