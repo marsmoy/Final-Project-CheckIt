@@ -141,6 +141,16 @@ function init(){
             <input type='submit' value='Home Page'>
         </form>
       ";
+
+      if (strcmp($email, "oconnonx@bc.edu") == 0 ||
+          strcmp($email, "bowditcw@bc.edu") == 0 ||
+          strcmp($email, "churo@bc.edu")    == 0  ) {
+
+          echo "<br><form action='./admin_console.php'>
+                    <input type='submit' value='Admin Console'>
+                    </form>
+                ";
+      }
       
       echo "
       <br><form method='get' action='./include/clearcookies.php'>
@@ -166,7 +176,7 @@ function init(){
        
         //print_r($stock_name);
       ?>
-    Buy Stock
+    <br>Buy Stock to Get Started
       <form method='get' action='include/stocksearch.php' onsubmit='return validate2();'>
         <input type="hidden" name="email" value= "<?php echo $email ?>">
         <input type="hidden" name="cash" value= "<?php echo $cash ?>">

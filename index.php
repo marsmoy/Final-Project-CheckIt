@@ -65,7 +65,7 @@
 		
 		function validateEmail(){
 			var theemail= document.getElementById("email").value ;
-			var emailregex=/^[A-Za-z0-9]{1}\\w*@[a-zA-Z]{1}\\w*\\.(com|gov|edu)$/;
+			var emailregex=/^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$/;
 			
 			if (!emailregex.test(theemail)) {
 				var errorrpt=document.getElementById("emailerror");
@@ -171,10 +171,12 @@
 			<a href="http://linkedin.com/in/jflah">Click here to network with me</a><br>
 			<a href="https://github.com/JFlah/Final-Project-CheckIt">Our github</a><br> </div>
 
-	<!--RSS below -->
+
 
 	<?php
+
 	//initialize news source
+	// RSS below 
 
 	$rss_feed = "http://rss.nytimes.com/services/xml/rss/nyt/Business.xml";
 

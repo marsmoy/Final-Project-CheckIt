@@ -4,7 +4,7 @@ include ('dbconn.php');
 ?>
 <html>
 <head>
-	<title>MySQL from PHP</title>
+	<title>CheckIt</title>
 </head>
 <body>
 
@@ -59,7 +59,9 @@ include ('dbconn.php');
 				}
 				else echo 'No Password Entered';
 			}
-			else echo 'Email Already Exists';
+			else echo "Email Already Exists
+						<br><a href='../index.php'>Go Back</a>";
+
 		}
 		else echo 'No Email Entered';
 	}

@@ -162,7 +162,13 @@ if (isset($_GET['cash'])){
     
     function searchDisplay($stock){
       $tuple = stockInfo($stock);
-      echo "The stock $stock is $tuple[0] with a change of $tuple[1]";
+      $stock = strtoupper($stock);
+      echo "The stock $stock is $tuple[0] with a change of $tuple[1]<br><br>";
+
+      $img_src = 'http://chart.finance.yahoo.com/t?s=' . $stock . '&lang=en-US®ion=US&width=600&height=360';
+
+      echo "<img src=$img_src >";
+
       echo "<br><a href='../profile.php'>Return to your Profile</a>";
       }
       
@@ -171,6 +177,11 @@ if (isset($_GET['cash'])){
       $stock = strtoupper($stock);
       //echo $email;
       echo "The stock $stock is $tuple[0] with a change of $tuple[1]";
+
+      $img_src = 'http://chart.finance.yahoo.com/t?s=' . $stock . '&lang=en-US®ion=US&width=600&height=360';
+
+      echo "<br><img src=$img_src >";
+
       $cash = $_GET['cash'];
       ?>
       <form method = "get" action = "checkit_ops.php" onsubmit='return validateBuy();'>
@@ -181,6 +192,7 @@ if (isset($_GET['cash'])){
         <input type = "text" id = "buy" name = "buy">
         <span class="ereport" id="buyerror"></span>
         <input type = "submit"  name = "buy_submit" value = "Buy">
+        <a href="../profile.php">Profile</a>
     </form>
         <?php
       }
@@ -189,6 +201,11 @@ if (isset($_GET['cash'])){
       $tuple = stockInfo($stock);
       $stock = strtoupper($stock);
       echo "The stock $stock is $tuple[0] with a change of $tuple[1]";
+
+      $img_src = 'http://chart.finance.yahoo.com/t?s=' . $stock . '&lang=en-US®ion=US&width=600&height=360';
+
+      echo "<br><img src=$img_src >";
+
       $previously_owned = false;
     foreach($stock_name as $name){
       if(strcmp($name, $stock) == 0){
@@ -209,6 +226,7 @@ if (isset($_GET['cash'])){
           <input type = "text" id = "sell" name = "sell">
           <span class="ereport" id="sellerror"></span>
           <input type = "submit"  name = "sell_submit" value = "Sell">
+          <a href="../profile.php">Profile</a>
         </form>
       <?php
       }
