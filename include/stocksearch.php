@@ -225,7 +225,7 @@ if (isset($_GET['cash'])){
             <label for="sell">How many stocks do you want to sell?: </label>
           <input type = "text" id = "sell" name = "sell">
           <span class="ereport" id="sellerror"></span>
-          <input type = "submit"  name = "sell_submit" value = "Sell">
+          <input type = "submit"  name = "sell_submit" value = "Sell"><br>
           <a href="../profile.php">Profile</a>
         </form>
       <?php

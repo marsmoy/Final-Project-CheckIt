@@ -2,7 +2,8 @@
 include ('include/dbconn.php');
 $dbc = connectToDB();
 $cookie_email = "email";
-$cookie_pass  = "pass";   
+$cookie_pass  = "pass";
+
 if (isset($_COOKIE[$cookie_email]) && isset($_COOKIE[$cookie_pass])){
       $email = $_COOKIE[$cookie_email];
       $password = $_COOKIE[$cookie_pass];
@@ -137,8 +138,10 @@ function init(){
       <?php
 
       echo "
-        <br><form method='get' action='./index.php'>
-            <input type='submit' value='Home Page'>
+        <br><form class='form-inline' method='get' action='./index.php'>
+          <div class='form-group'>
+            <input class='form-control' type='submit' value='Home Page'>
+            </div>
         </form>
       ";
 
@@ -146,15 +149,19 @@ function init(){
           strcmp($email, "bowditcw@bc.edu") == 0 ||
           strcmp($email, "churo@bc.edu")    == 0  ) {
 
-          echo "<br><form action='./admin_console.php'>
-                    <input type='submit' value='Admin Console'>
+          echo "<br><form class='form-inline' action='./admin_console.php'>
+                    <div class='form-group'>
+                    <input class='form-control' type='submit' value='Admin Console'>
+                    </div>
                     </form>
                 ";
       }
       
       echo "
-      <br><form method='get' action='./include/clearcookies.php'>
-        <input type='submit' name='logout' value='Logout'>
+      <br><form class='form-inline' method='get' action='./include/clearcookies.php'>
+        <div class='form-group'>
+        <input class='form-control' type='submit' name='logout' value='Logout'>
+        </div>
       </form>
       ";
         $name_price = array();
@@ -176,49 +183,55 @@ function init(){
        
         //print_r($stock_name);
       ?>
-    <br>Buy Stock to Get Started
-      <form method='get' action='include/stocksearch.php' onsubmit='return validate2();'>
+    <br><h1>Buy Stock to Get Started</h1>
+    <form class="form-inline" method='get' action='include/stocksearch.php' onsubmit='return validate2();'>
+            <div class="form-group">
         <input type="hidden" name="email" value= "<?php echo $email ?>">
         <input type="hidden" name="cash" value= "<?php echo $cash ?>">
-            <input id='buy_query' type='text' name='buy_query' placeholder='Enter stock ticker'><br>
+            <input class="form-control" id='buy_query' type='text' name='buy_query' placeholder='Enter stock ticker'><br>
             <span class="ereport" id="searcherror2"></span><br>
-            <input type='submit' name='buy_search' value='Buy'>
+            <input class="form-control" type='submit' name='buy_search' value='Buy'>
+          </div>
         </form>
         <br>
 
 
     <div id="right">
       <h5> Your Chat Feed Today! </h5>
-      <input type="text" name="textBox" id="textBox" placeholder="Send a message..."/>
-      <button onclick="sendMessage()">Send</button>
+      <input class="form-control" type="text" name="textBox" id="textBox" placeholder="Send a message..."/>
+      <button class="form-control" onclick="sendMessage()">Send</button>
       <div id="chat"></div>
     </div>
       <script src="http://cdn.pubnub.com/pubnub-3.7.1.min.js"></script>
       <script src="/~oconnonx/CheckIt/js/main.js"></script>
 
         <br>
-        Sell Stock
-      <form method='get' action='include/stocksearch.php' onsubmit='return validate3();'>
+        <h1>Sell Stock</h1>
+      <form class="form-inline" method='get' action='include/stocksearch.php' onsubmit='return validate3();'>
+        <div class="form-group">
         <input type="hidden" name="email" value= "<?php echo $email ?>">
         <input type="hidden" name="cash" value= "<?php echo $cash ?>">
         <input type="hidden" name="stocks" value= "<?php echo $stocks ?>">
-            <input id='sell_query' type='text' name='sell_query' placeholder='Enter stock ticker'><br>
+            <input id='sell_query' class="form-control" type='text' name='sell_query' placeholder='Enter stock ticker'><br>
             <span class="ereport" id="searcherror3"></span><br>
-            <input type='submit' name='sell_search' value='Sell'>
+            <input class="form-control" type='submit' name='sell_search' value='Sell'>
+          </div>
         </form>
         <br><br>
-        Search Stock
-        <form method='get' action='include/stocksearch.php' onsubmit='return validate();'>
+        <h1>Search Stock</h1>
+        <form class="form-inline" method='get' action='include/stocksearch.php' onsubmit='return validate();'>
+            <div class="form-group">
           <input type="hidden" name="email" value= "<?php echo $email ?>">
-            <input id='search' type='text' name='search' placeholder='Enter stock ticker'><br>
+            <input class="form-control" id='search' type='text' name='search' placeholder='Enter stock ticker'><br>
             <span class="ereport" id="searcherror"></span><br>
-            <input type='submit' name='submit_search' value='Search'>
+            <input class="form-control" type='submit' name='submit_search' value='Search'>
+          </div>
         </form><br>
 
-        <form method='get' action='include/cash_ops.php'>
-            <input type="text" name="amount" placeholder="Enter amount">
-            <input type="submit" name="deposit" value="Deposit">
-            <input type="submit" name="withdraw" value="Withdraw">
+        <form class="form-inline" method='get' action='include/cash_ops.php'>
+            <input class="form-control" type="text" name="amount" placeholder="Enter amount">
+            <input class="form-control" type="submit" name="deposit" value="Deposit">
+            <input class="form-control" type="submit" name="withdraw" value="Withdraw">
             <input type="hidden" name="cash" value= "<?php echo $cash ?>">
             <input type="hidden" name="email" value="<?php echo $email ?>">
 
@@ -239,6 +252,14 @@ function init(){
 <!DOCTYPE html>
 <html lang="en">
 <head>
+     <link href="http://getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+     <link href="http://getbootstrap.com/examples/signin/signin.css" rel="stylesheet">
+
+    <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
+    <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+     <script src="./Signin_files/ie-emulation-modes-warning.js"></script><style type="text/css"></style>
      <meta charset="utf-8" />
      <title>CheckIt</title>
      <link rel="stylesheet" type="text/css" href="CSS/check.css">

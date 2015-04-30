@@ -9,4 +9,9 @@
 
 #right{
 			float: right;
+			color: black;
+}
+
+#rightwhite{
+	float:right;
 }

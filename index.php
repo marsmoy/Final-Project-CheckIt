@@ -8,16 +8,25 @@
 
 <html lang="en">
 <head>
-     <meta charset="utf-8" />
-     <title>CheckIt</title>
-     <link rel="stylesheet" type="text/css" href="CSS/check.css">
-     <style>
+	<meta charset="utf-8" />
+    <title>CheckIt</title>
+    <link rel="stylesheet" type="text/css" href="CSS/check.css">
+ 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script> 
+	 <style>
      	.news {
 			overflow: auto;
 			height: 300px;	
 			border: 3px groove blue
  		}
  		p { font-size: xx-small }
+ 		body{
+ 			color: white;
+ 			background: url("https://castlehillview.files.wordpress.com/2015/01/stock-market-3.jpg")
+ 		}
+
  	 </style>
 
   	 <script type="text/javascript">
@@ -65,7 +74,7 @@
 		
 		function validateEmail(){
 			var theemail= document.getElementById("email").value ;
-			var emailregex=/^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$/;
+			var emailregex=/^[A-Za-z0-9]{1}\\w*@[a-zA-Z]{1}\\w*\\.(com|gov|edu)$/;
 			
 			if (!emailregex.test(theemail)) {
 				var errorrpt=document.getElementById("emailerror");
@@ -124,106 +133,79 @@
 <?php
     function displayHome(){
 ?>
-		<h1>CheckIt Stock Portoflio</h1>
+		<h1 class='page-header text-center'>CheckIt Stock Portfolio</h1>
 		<form method="get">
-			<input type="submit" name="about" value="About CheckIt">
+			<input class='btn btn-sm btn-default' type="submit" name="about" value="About CheckIt">
 		</form>
 
 		<?php
 		if (!isset($_COOKIE['email'])){ echo "
 
 		<form method='get' action='http://cscilab.bc.edu/~oconnonx/CheckIt/checkit_signin.php'>
-			<input type='submit' name='signin' value='Sign In'>
+			<input class='btn btn-lg btn-primary' type='submit' name='signin' value='Sign In'>
 		</form>
-		<form method='get'>
-			<input type='submit' name='create' value='Create Account'>
+		<form method='get' action='./include/index2.php'>
+			<input class='btn btn-sm btn-default' type='submit' name='create' value='Create Account'>
 		</form>
 		";
 		} else { echo "
 			<form action='profile.php'>
-				<input type='submit' name='signin' value='Profile'>
+				<input class='btn btn-sm btn-primary' type='submit' name='signin' value='Profile'>
 			</form> ";
 				echo "
       		<br><form method='get' action='./include/clearcookies.php'>
-        		<input type='submit' name='logout' value='Logout'>
+        		<input class='btn btn-sm btn-default' type='submit' name='logout' value='Logout'>
       		</form>";
 		}
 
 		?>
 
+		<h1><div id="rightwhite"> Your Chat Feed Today! </div></h1><br><br><br>
 		<div id="right">
-		<h5> Your Chat Feed Today! </h5>
-		<input type="text" name="textBox" id="textBox" placeholder="Send a message..."/>
-		<button onclick="sendMessage()">Send</button>
+		<div class="form-inline">
+			<input class="form-control"type="text" name="textBox" id="textBox" placeholder="Send a message..."/>	
+			<button class="form-control form-inline" onclick="sendMessage()">Send</button>
+		</div>
 		<div id="chat"></div>
 
 		</div>
 		<script src="http://cdn.pubnub.com/pubnub-3.7.1.min.js"></script>
 		<script src="/~oconnonx/CheckIt/js/main.js"></script>
 
-  	<img src="https://castlehillview.files.wordpress.com/2015/01/stock-market-3.jpg" alt="main page" height="400" width="500"><br>
+ <!-- 
+ 	<img src="https://castlehillview.files.wordpress.com/2015/01/stock-market-3.jpg" alt="main page" height="400" width="500"><br>
 		<p>
 			Image source: https://zacharydiamond.files.wordpress.com/2014/12/ski-mask-hacker-2.jpg?w=470&h=140&crop=1
 		</p>
-	<div>
-			<label>Some important links</label><br>
-			<a href="https://cs.bc.edu">Here is BC Comp Sci</a><br>
-			<a href="http://linkedin.com/in/jflah">Click here to network with me</a><br>
-			<a href="https://github.com/JFlah/Final-Project-CheckIt">Our github</a><br> </div>
+ -->
+	<div class='form-inline'>
+			<h1>Some important links</h1><br>
+			<a class='form-control' href="https://cs.bc.edu">Here is BC Comp Sci</a><br>
+			<a class='form-control' href="http://linkedin.com/in/jflah">Click here to network with me</a><br>
+			<a class='form-control' href="https://github.com/JFlah/Final-Project-CheckIt">Our github</a><br> </div>
 
-
+	<!--RSS below -->
 
 	<?php
-
 	//initialize news source
-	// RSS below 
 
 	$rss_feed = "http://rss.nytimes.com/services/xml/rss/nyt/Business.xml";
 
 	$rss= new SimpleXMLElement(file_get_contents($rss_feed));
 	$title = $rss->channel->title;
-	echo "<h1>$title</h1>";
+	echo "<h1 class='text-center'>$title</h1>";
+	echo "<div class='container'>";
 	$items = $rss->channel->item;
 		foreach ($items as $item) {
-			echo "<div class='news'>
+			echo "<div class='form-control news'>
 			<h2>$item->title</h2>\n";
-			echo '<a href="' . $item->link . '">' . $item->title . '</a><br>';
+			echo '<a class="form-inline" href="' . $item->link . '">' . $item->title . '</a><br>';
 			echo $item->description . "<br><br>\n";
 			echo "<br></div>";
 		}
+	echo "</div>";
 	}  
       
-
-    function displaynewAccountForm(){
-      ?>
-        <fieldset><legend><h4>Create Checkit Account</h4></legend>
-          <br><br>
-          <form method="post" action = "include/checkit_ops.php" onsubmit = "return validate();">
-              <label for="first">Please enter your first name: </label>
-              <input type = "text" id = "first" name = "first">
-				<span class="ereport" id="firsterror"></span>
-            	<br><br>
-            	<label for="name">Please enter your last name: </label>
-				<input type = "text" id = "last" name = "last">
-				<span class="ereport" id="lasterror"></span>
-				<br><br>
-				<label for="email">Please enter your email: </label>
-				<input type = "text" id = "email" name = "email">
-				<span class="ereport" id="emailerror"></span>
-				<br><br>
-				<label for="password">Please enter your password: </label>
-				<input type = "password" id = "password" name = "password">
-				<span class="ereport" id="pass1error"></span>
-				<br><br>
-				<label for="password2">Please confirm your password: </label>
-				<input type = "password" id = "password2" name = "password2">
-				<span class="ereport" id="passerror"></span>
-				<br><br>
-    			<input type = "submit"  name = "submit_button" value = "Submit">
-           </form>
-         </fieldset>
-<?php
-}
 function displayAbout(){
 ?>
 	<fieldset>CheckIt is a simple idea. Unlike the messy, intimidating web pages<br>
