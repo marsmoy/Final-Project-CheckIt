@@ -37,8 +37,9 @@
 
     <div class="container">
 
-      <form class="form-signin" method="post" action="http://cscilab.bc.edu/~oconnonx/CheckIt/profile.php">
+      <form class="form-signin" method="post" action="profile.php">
         <h2 class="form-signin-heading">Please sign in</h2>
+        <input type="hidden" name = "stocks">
         <label for="email" class="sr-only">Email address</label>
         <input type="email" id="email" name="email" class="form-control" placeholder="Email address" required="" autofocus="">
         <label for="password" class="sr-only">Password</label>
@@ -46,7 +47,7 @@
         <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
       </form>
 
-      <a href="http://cscilab.bc.edu/~oconnonx/CheckIt/forgot_password.php">Forgot your password?</a>
+      <a href="forgot_password.php">Forgot your password?</a>
 
     </div> <!-- /container -->
 

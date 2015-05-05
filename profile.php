@@ -1,4 +1,5 @@
 <?php
+ob_start();
 include ('include/dbconn.php');
 $dbc = connectToDB();
 $cookie_email = "email";
@@ -71,7 +72,18 @@ function init(){
         return array ($price,$change1);
 
     }
-    
+    ?>
+    <!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Profile</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+</head>
+<body>
+<?php
       function displayProfile($dbc,$email,$password) {
        $sha_password = sha1($password);
         $profile_query = "select * from checkit where email = '$email' and password = '$sha_password'";
@@ -109,32 +121,38 @@ function init(){
       echo "Hello $first $last!<br>\n";
 
       ?>
-      <fieldset>
-      <legend>Stock Table</legend>
-      <table>
+      <div class = "container">
+      <h2>Your Portfolio</h2>
+      <table class = "table">
+      <thread>
         <tr>
           <th>Ticker</th>
           <th>Value</th>
           <th>Change</th>
           <th>Amount Owned</th>
         </tr>
+    </thread>
       <?php
       $sum = 0;
       $total_change = 0;
+      $class = "success";
       for ( $i = 0; $i < sizeof($stock_name); $i++ ) {
+      	$class = $class == "success" ? "info": "success";
         $stock = $stock_name[$i];
         $sum = $sum + ($name_price[$stock])*($stock_owned[$i]);
         $total_change = $total_change + substr($name_change[$stock],1,strlen($name_change[$stock])-1);
-        echo "<tr>
+        echo "<tbody>
+        	<tr class = $class>
               <td>$stock</td><td>$name_price[$stock]</td><td>$name_change[$stock]</td><td>$stock_owned[$i]</td>
-            </tr>\n";
+            </tr> ";
+            
       }
       $average_change = $total_change/sizeof($stock_name);
       $average_change = substr($average_change,0,4);
       ?>
-
+	  </tbody>
       </table>
-      </fieldset>
+      </div>
       <?php
 
       echo "

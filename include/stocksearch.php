@@ -1,4 +1,7 @@
 <?php
+include("name_ticker.php");
+
+
 $email = $_GET['email'];
 if (isset($_GET['search'])){
   $stock = $_GET['search'];
@@ -61,19 +64,39 @@ if (isset($_GET['cash'])){
 <body>
 
   <?php
+  	global $ticker_name_arr;
     if( isset($stock)) {
-      if(isValid($stock)){
-        searchDisplay($stock);
+      	$stock_check = name_ticker2($ticker_name_arr,$stock);
+  	  	if($stock_check != False) {
+  	  		suggestionsDisplay($stock_check,3,$email,0,0);
+  	  	}
+      	else if(isValid($stock)){
+        	searchDisplay($stock);
       }
     }
     if( isset($buy_stock)) {
-      if(isValid($buy_stock)) {
-        buyDisplay($buy_stock,$email);
+    	#echo "hello";
+      	$stock_check = name_ticker2($ticker_name_arr,$buy_stock);
+  	  	if($stock_check != False) {
+  	  		suggestionsDisplay($stock_check,1,$email,$cash,0);
+  	  		
+  	  	}
+      	else if(isValid($buy_stock)) {
+        	buyDisplay($buy_stock,$email);
       }
     }
     if( isset($sell_stock)) {
-      if(isValid($sell_stock)) {
-        $stocks = $_GET['stocks'];
+    	if(isset($_GET['stocks'] ) ){
+        	$stocks = $_GET['stocks'];
+        	}
+    	$stock_check = name_ticker2($ticker_name_arr,$sell_stock);
+  	  	if($stock_check != False) {
+  	  		suggestionsDisplay($stock_check,2,$email,$cash,$stocks);
+  	  	}
+    else if(isValid($sell_stock)) {
+    		if(isset($_GET['stocks'] ) ){
+        		$stocks = $_GET['stocks'];
+        	}
             $stock_array = explode(" ",$stocks);
             $stock_name = array();
             $stock_owned = array();
@@ -99,8 +122,8 @@ if (isset($_GET['cash'])){
 <?php
   function isValid($stock_name) {
       $page = 'http://finance.yahoo.com/q?s=' . $stock_name;
-      $content = file_get_contents($page);
       $stocklower = strtolower($stock_name);
+      $content = file_get_contents($page);
       $value_pattern = "!yfs_l84_$stocklower\">([0-9,]+\.[0-9]*)!";
       $change_pattern = "!yfs_p43_$stocklower\">\\([0-9]{1,2}\\.[0-9]{2}%\\)!";
       
@@ -231,5 +254,27 @@ if (isset($_GET['cash'])){
       <?php
       }
       }
+      
+      function suggestionsDisplay($stock_arr,$action,$email,$cash,$stocks){
+      	echo "Stock ticker not found. Did you mean: <br>";
+      	if($action == 1) $query = "buy_query";
+      	if($action ==2) {
+      		$cash = $cash . "&stocks=" . urlencode($stocks);
+      		$query = "sell_query";
+      		}
+      	foreach($stock_arr as $value) {
+      			#echo $stocks;
+      			if($action ==3) {
+      			$url = 'http://cscilab.bc.edu/~oconnonx/CheckIt/include/stocksearch.php?email='.$email.'&search='.$value[0].'&submit_search=Search';
+  	  			}
+  	  			else{
+  	  				$url = 'http://cscilab.bc.edu/~oconnonx/CheckIt/include/stocksearch.php?email='.$email."&cash=".$cash."&".$query."=".$value[0];
+  	  				}
+  	  			#echo $url;
+  	  			echo "<a href = $url> $value[1] -> $value[0] </a>";
+  	  			echo "<br>";
+  	  			}
+  	  	echo "<br><a href='../profile.php'>Return to your Profile</a>";
+  	  		}
 
 ?>

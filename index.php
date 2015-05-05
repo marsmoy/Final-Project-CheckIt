@@ -141,7 +141,7 @@
 		<?php
 		if (!isset($_COOKIE['email'])){ echo "
 
-		<form method='get' action='http://cscilab.bc.edu/~oconnonx/CheckIt/checkit_signin.php'>
+		<form method='get' action='checkit_signin.php'>
 			<input class='btn btn-lg btn-primary' type='submit' name='signin' value='Sign In'>
 		</form>
 		<form method='get' action='./include/index2.php'>
@@ -178,6 +178,14 @@
 			Image source: https://zacharydiamond.files.wordpress.com/2014/12/ski-mask-hacker-2.jpg?w=470&h=140&crop=1
 		</p>
  -->
+ 		<?php
+ 		$nasdaq = "http://chart.finance.yahoo.com/t?s=%5eIXIC&lang=en-US&region=US&width=300&height=180";
+		$dow_jones = "http://chart.finance.yahoo.com/t?s=%5eDJI&lang=en-US&region=US&width=300&height=180";
+		$sp500 = "http://chart.finance.yahoo.com/t?s=%5eGSPC&lang=en-US&region=US&width=300&height=180";
+     	echo "<img src=$nasdaq >";
+     	echo "<img src=$dow_jones >";
+      	echo "<img src=$sp500 >";
+      	?>
 	<div class='form-inline'>
 			<h1>Some important links</h1><br>
 			<a class='form-control' href="https://cs.bc.edu">Here is BC Comp Sci</a><br>
