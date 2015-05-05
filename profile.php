@@ -118,7 +118,7 @@ function init(){
             $name_change[$value] = $type[1];
           }
 
-      echo "Hello $first $last!<br>\n";
+      echo "<h1>Hello $first $last!</h1><br>\n";
 
       ?>
       <div class = "container">

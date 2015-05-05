@@ -189,10 +189,25 @@ if (isset($_GET['cash'])){
       echo "The stock $stock is $tuple[0] with a change of $tuple[1]<br><br>";
 
       $img_src = 'http://chart.finance.yahoo.com/t?s=' . $stock . '&lang=en-US®ion=US&width=600&height=360';
-
+		
       echo "<img src=$img_src >";
-
       echo "<br><a href='../profile.php'>Return to your Profile</a>";
+	$rss_feed = "http://feeds.finance.yahoo.com/rss/2.0/headline?s=".$stock."&region=US&lang=en-US";
+
+	$rss= new SimpleXMLElement(file_get_contents($rss_feed));
+	$title = $rss->channel->title;
+	echo "<h1 class='text-center'>$title</h1>";
+	echo "<div class='container'>";
+	$items = $rss->channel->item;
+		foreach ($items as $item) {
+			echo "<div class='form-control news'>
+			<h2>$item->title</h2>\n";
+			echo '<a class="form-inline" href="' . $item->link . '">' . $item->title . '</a><br>';
+			echo $item->description . "<br><br>\n";
+			echo "<br></div>";
+		}
+	echo "</div>";
+      
       }
       
     function buyDisplay($stock,$email){
