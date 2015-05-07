@@ -10,4 +10,4 @@
 
 	header("Location: ../index.php");
 
-	?>
+?>

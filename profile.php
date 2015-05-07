@@ -4,7 +4,6 @@ include ('include/dbconn.php');
 $dbc = connectToDB();
 $cookie_email = "email";
 $cookie_pass  = "pass";
-
 if (isset($_COOKIE[$cookie_email]) && isset($_COOKIE[$cookie_pass])){
       $email = $_COOKIE[$cookie_email];
       $password = $_COOKIE[$cookie_pass];
@@ -16,7 +15,6 @@ if (isset($_COOKIE[$cookie_email]) && isset($_COOKIE[$cookie_pass])){
         setcookie($cookie_pass, $password, time() + (86400 * 30), "/"); // 86400 = 1 day
       }
 }
-
 function init(){
     $cookie_email = "email";
     $cookie_pass  = "pass"; 
@@ -34,7 +32,7 @@ function init(){
       displayProfile($dbc,$email,$password);
     }
     else {
-      echo "<a href='http://cscilab.bc.edu/~oconnonx/CheckIt/checkit_signin.php?signin=Sign+In'>Invalid Password back to Login Page</a>";
+      echo "<h1 class='container'>Invalid Password</h1>";
     }
   }
   
@@ -68,9 +66,7 @@ function init(){
         if($x===FALSE) {
           $change1 = "(" . $change1;
         }
-
         return array ($price,$change1);
-
     }
     ?>
     <!DOCTYPE html>
@@ -83,6 +79,21 @@ function init(){
   <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
 </head>
 <body>
+
+<nav class="navbar navbar-fixed-top navbar-inverse">
+	  <div class="container">
+		<div class="navbar-header">
+		  <a class="navbar-brand">Checkit Stock Portfolio</a>
+		</div>
+		<div id="navbar" class="collapse navbar-collapse">
+		  <ul class="nav navbar-nav">
+			<li><a href="./index.php">Home</a></li>
+			<li class="active"><a href="../profile.php">Profile</a></li>
+		  </ul>
+		</div><!-- /.nav-collapse -->
+	  </div><!-- /.container -->
+	</nav><!-- /.navbar -->
+	<h1></h1>
 <?php
       function displayProfile($dbc,$email,$password) {
        $sha_password = sha1($password);
@@ -95,7 +106,7 @@ function init(){
         $cash = $row['cash'];
         $stocks = $row['stocks'];
         if(strcmp($stocks,"")==0){
-          echo "You do not own any stocks!";
+          echo "<div class='container'>You do not own any stocks!</div>";
         }
         else{
            $stock_array = explode(" ",$stocks);
@@ -117,9 +128,7 @@ function init(){
             $name_price[$value] = $type[0];
             $name_change[$value] = $type[1];
           }
-
       echo "<h1>Hello $first $last!</h1><br>\n";
-
       ?>
       <div class = "container">
       <h2>Your Portfolio</h2>
@@ -154,20 +163,10 @@ function init(){
       </table>
       </div>
       <?php
-
-      echo "
-        <br><form class='form-inline' method='get' action='./index.php'>
-          <div class='form-group'>
-            <input class='form-control' type='submit' value='Home Page'>
-            </div>
-        </form>
-      ";
-
       if (strcmp($email, "oconnonx@bc.edu") == 0 ||
           strcmp($email, "bowditcw@bc.edu") == 0 ||
           strcmp($email, "churo@bc.edu")    == 0  ) {
-
-          echo "<br><form class='form-inline' action='./admin_console.php'>
+          echo "<br><form class='form-inline container' action='./admin_console.php'>
                     <div class='form-group'>
                     <input class='form-control' type='submit' value='Admin Console'>
                     </div>
@@ -176,7 +175,7 @@ function init(){
       }
       
       echo "
-      <br><form class='form-inline' method='get' action='./include/clearcookies.php'>
+      <br><form class='form-inline container' method='get' action='./include/clearcookies.php'>
         <div class='form-group'>
         <input class='form-control' type='submit' name='logout' value='Logout'>
         </div>
@@ -189,20 +188,19 @@ function init(){
             $name_price[$value] = $type[0];
             $name_change[$value] = $type[1];
           }
-
       ?>
     
       <?php
       
       
-      echo "Portfolio Value: &#36;$sum<br>\n";
-      echo "Average Change: $average_change&#37;<br>\n";
+      echo "<div class='container'>Portfolio Value: &#36;$sum<br>\n";
+      echo "Average Change: $average_change&#37;<br></div>\n";
         }
        
         //print_r($stock_name);
       ?>
-    <br><h1>Buy Stock to Get Started</h1>
-    <form class="form-inline" method='get' action='include/stocksearch.php' onsubmit='return validate2();'>
+    <br><h1 class='container'>Buy Stock</h1>
+    <form class="form-inline container" method='get' action='include/stocksearch.php' onsubmit='return validate2();'>
             <div class="form-group">
         <input type="hidden" name="email" value= "<?php echo $email ?>">
         <input type="hidden" name="cash" value= "<?php echo $cash ?>">
@@ -214,18 +212,9 @@ function init(){
         <br>
 
 
-    <div id="right">
-      <h5> Your Chat Feed Today! </h5>
-      <input class="form-control" type="text" name="textBox" id="textBox" placeholder="Send a message..."/>
-      <button class="form-control" onclick="sendMessage()">Send</button>
-      <div id="chat"></div>
-    </div>
-      <script src="http://cdn.pubnub.com/pubnub-3.7.1.min.js"></script>
-      <script src="/~oconnonx/CheckIt/js/main.js"></script>
-
         <br>
-        <h1>Sell Stock</h1>
-      <form class="form-inline" method='get' action='include/stocksearch.php' onsubmit='return validate3();'>
+        <h1 class='container'>Sell Stock</h1>
+      <form class="form-inline container" method='get' action='include/stocksearch.php' onsubmit='return validate3();'>
         <div class="form-group">
         <input type="hidden" name="email" value= "<?php echo $email ?>">
         <input type="hidden" name="cash" value= "<?php echo $cash ?>">
@@ -236,8 +225,8 @@ function init(){
           </div>
         </form>
         <br><br>
-        <h1>Search Stock</h1>
-        <form class="form-inline" method='get' action='include/stocksearch.php' onsubmit='return validate();'>
+        <h1 class='container'>Search Stock</h1>
+        <form class="form-inline container" method='get' action='include/stocksearch.php' onsubmit='return validate();'>
             <div class="form-group">
           <input type="hidden" name="email" value= "<?php echo $email ?>">
             <input class="form-control" id='search' type='text' name='search' placeholder='Enter stock ticker'><br>
@@ -245,8 +234,16 @@ function init(){
             <input class="form-control" type='submit' name='submit_search' value='Search'>
           </div>
         </form><br>
+        <div class='form-inline' id="right">
+      <h5> Your Chat Feed Today! </h5>
+      <input class="form-control" type="text" name="textBox" id="textBox" placeholder="Send a message..."/>
+      <button class="form-control" onclick="sendMessage()">Send</button>
+      <div id="chat"></div>
+    </div>
+      <script src="http://cdn.pubnub.com/pubnub-3.7.1.min.js"></script>
+      <script src="/~oconnonx/CheckIt/js/main.js"></script>
 
-        <form class="form-inline" method='get' action='include/cash_ops.php'>
+        <form class="form-inline container" method='get' action='include/cash_ops.php'>
             <input class="form-control" type="text" name="amount" placeholder="Enter amount">
             <input class="form-control" type="submit" name="deposit" value="Deposit">
             <input class="form-control" type="submit" name="withdraw" value="Withdraw">
@@ -256,7 +253,7 @@ function init(){
         </form>
         <?php
           
-    echo "<br>Cash: &#36;$cash<br>\n";
+    echo "<br><div class='container'>Cash: &#36;$cash</div><br>\n";
         
           
       }
@@ -285,10 +282,8 @@ function init(){
            function validate(){
             var validSearch = validateSearch();
             if (!validSearch) return false;
-
             return true;
           }
-
           function validateSearch(){
             var thesearch= document.getElementById("search").value ;
             
@@ -306,10 +301,8 @@ function init(){
           function validate2(){
             var validSearch = validateSearch2();
             if (!validSearch) return false;
-
             return true;
           }
-
           function validateSearch2(){
             var thesearch= document.getElementById("buy_query").value ;
             
@@ -327,10 +320,8 @@ function init(){
           function validate3(){
             var validSearch = validateSearch3();
             if (!validSearch) return false;
-
             return true;
           }
-
           function validateSearch3(){
             var thesearch= document.getElementById("sell_query").value ;
             

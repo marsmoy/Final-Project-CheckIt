@@ -7,9 +7,11 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script> 
+<link href="http://getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="http://getbootstrap.com/examples/signin/signin.css" rel="stylesheet">
 <style type="text/css">
     .bs-example{
-    	margin: 20px;
+    	margin: 30px;
     }
 </style>
 <script type="text/javascript">
@@ -49,8 +51,24 @@
       </script>
 </head>
 <body>
+	<nav class="navbar navbar-fixed-top navbar-inverse">
+		  <div class="container">
+			<div class="navbar-header">
+			  <a class="navbar-brand">Checkit Stock Portfolio</a>
+			</div>
+			<div id="navbar" class="collapse navbar-collapse">
+			  <ul class="nav navbar-nav">
+			  	<li><a href='./index.php'>Home</a></li>
+				<li class="active"><a href="./index2.php">Create Account</a></li>
+				<li><a href="./checkit_signin.php">Sign In</a></li>
+				<li><a href="./about.php">About</a></li>
+			  </ul>
+			</div><!-- /.nav-collapse -->
+		  </div><!-- /.container -->
+		</nav><!-- /.navbar -->
+<div class='container'>
 <div class="bs-example">
-    <form method="post" action = "checkit_ops.php" onsubmit = "return validate();">
+    <form method="post" action = "./include/checkit_ops.php" onsubmit = "return validate();">
         <div class="form-group">
             <label for="inputName">Please enter your first name: </label>
             <input type="name" class="form-control" id="inputName" name = "first" placeholder="First Name" required="">
@@ -79,9 +97,9 @@
             <label><input type="checkbox"> Remember me</label>
         </div>
         <button type="submit" class="btn btn-primary">Login</button>
-		<a href='http://cscilab.bc.edu/~oconnonx/CheckIt/'>Back to Checkit</a>
 
     </form>
+</div>
 </div>
 </body>
 </html>                                		

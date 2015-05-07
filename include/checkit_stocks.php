@@ -5,16 +5,44 @@ include ('dbconn.php');
 <html>
 <head>
 	<title>CheckIt</title>
+	 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script> 
+	<link href="http://getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="http://getbootstrap.com/examples/signin/signin.css" rel="stylesheet">
+	 <link rel="stylesheet" type="text/css" href="CSS/check.css">
+
 </head>
 <body>
-
+<nav class="navbar navbar-fixed-top navbar-inverse">
+	  <div class="container">
+		<div class="navbar-header">
+		  <a class="navbar-brand">Checkit Stock Portfolio</a>
+		</div>
+		<div id="navbar" class="collapse navbar-collapse">
+		  <ul class="nav navbar-nav">
+			<li><a href="../profile.php">Profile</a></li>
+			<li class="active"><a href="./buysell.php">Buy/Sell Stocks</a></li>
+		  </ul>
+		</div><!-- /.nav-collapse -->
+	  </div><!-- /.container -->
+	</nav><!-- /.navbar -->
+	<h1></h1>
 <?php
-	if (isset($_GET['cash'])){
-		$cash = $_GET['cash'];
-	}
-	$dbc= @mysqli_connect("localhost", "bowditcw", "H8zFAA2E", "bowditcw") or
-					die("Connect failed3: ". mysqli_connect_error());
-					
+
+	ob_start();
+	$dbc = connectToDB();
+	$email = $_COOKIE['email'];
+	$password = $_COOKIE['pass'];
+	
+	$sha_password = sha1($password);
+	$profile_query = "select * from checkit where email = '$email' and password = '$sha_password'";
+	$result = performQuery($dbc,$profile_query);
+	$row = mysqli_fetch_array($result, MYSQLI_ASSOC);
+	
+	$cash = $row['cash'];
+
 	
 	if( isset($_GET['buy'] ) ) {
 		$email = $_GET['email'];
@@ -58,26 +86,19 @@ include ('dbconn.php');
 				}
 				else echo 'No Password Entered';
 			}
-			else echo "Email Already Exists
-						<br><a href='../index.php'>Go Back</a>";
+			else echo "<div class='container'>Email Already Exists</div>";
 		}
-		else echo 'No Email Entered';
+		else echo "<div class='container'>No Email Entered</div>";
 	}
 ?>
 
 </body>
 </html>
 <?php
-function createAccount($dbc,$first,$last,$email,$password){
-	$query = "INSERT INTO checkit VALUES ('$first','$last','0.0','', '$password','$email')";
-	$result = performQuery($dbc, $query);
-	if ( ! $result )
-		echo "<br>Oops! Something went wrong";
-	else
-		echo "<br>Congratulations on joining CheckIt!";
-	echo "<a href='http://cscilab.bc.edu/~oconnonx/CheckIt/index.php'>Back to Home Page</a>";
-}
-function updateBuy($dbc,$buy,$stock,$email) {
+function updateBuy($dbc,$buy,$stock) {
+	$email = $_COOKIE['email'];
+	$password = $_COOKIE['pass'];
+	
 	$profile_query = "select * from checkit where email = '$email'";
     $result = performQuery($dbc,$profile_query);
     $row = mysqli_fetch_array($result, MYSQLI_ASSOC);
@@ -102,9 +123,9 @@ function updateBuy($dbc,$buy,$stock,$email) {
     $tuple = stockInfo($stock);
 	$cost = $tuple[0]*$buy;
 	if ($cost >$cash){
-		echo "Insufficent Funds: <br>";
-		echo "Cost: $cost <br>";
-		echo "Cash Avaliable: $cash";
+		echo "<div class='container'>Insufficent Funds </div><br>";
+		echo "<div class='container'>Cost: $cost </div><br>";
+		echo "<div class='container'>Cash Avaliable: $cash</div>";
 	}
 	else {
 		$updated_cash = $cash - $cost;
@@ -135,12 +156,12 @@ function updateBuy($dbc,$buy,$stock,$email) {
 			}
 		$update_query = "UPDATE checkit SET stocks='$updated_stocks',cash = '$updated_cash' WHERE email = '$email'";
 		$result2 = performQuery($dbc,$update_query);
-		echo "Congratulations, you successfully purchased $buy shares of $stock";
-		echo "<br><a href='../profile.php'>Return to your Profile</a>";
+		echo "<div class='container'><h1>Congratulations, you successfully purchased $buy shares of $stock</h1></div>";
 			}
 }
 		
-function updateSell($dbc,$sell,$stock,$email) {
+function updateSell($dbc,$sell,$stock) {
+	$email = $_COOKIE['email'];
 	$profile_query = "select * from checkit where email = '$email'";
     $result = performQuery($dbc,$profile_query);
     $row = mysqli_fetch_array($result, MYSQLI_ASSOC);
@@ -174,7 +195,7 @@ function updateSell($dbc,$sell,$stock,$email) {
 	$j++;
 	}
 	if($stock_owned[$index]<$sell){
-		 die("You cannot sell $sell shares because you only own $stock_owned[$index]");
+		 die("<div class='container'><h1>You cannot sell $sell shares because you only own $stock_owned[$index]</h1></div>");
 		}
 	if($stock_owned[$index]==$sell){
 		unset($stock_owned[$index]);
@@ -199,8 +220,7 @@ function updateSell($dbc,$sell,$stock,$email) {
 	}
 		$update_query = "UPDATE checkit SET stocks='$updated_stocks',cash = '$updated_cash' WHERE email = '$email'";
 		$result2 = performQuery($dbc,$update_query);
-		echo "Congratulations, you successfully sold $sell shares of $stock";
-		echo "<br><a href='../profile.php'>Return to your Profile</a>";		
+		echo "<div class='container'><h1>Congratulations, you successfully sold $sell shares of $stock</h1></div>";
 }
 		
 function stockInfo($stock_name) {

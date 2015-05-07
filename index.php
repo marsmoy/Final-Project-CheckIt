@@ -15,17 +15,9 @@
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script> 
+	<link href="http://getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
+	<link href="http://getbootstrap.com/examples/signin/signin.css" rel="stylesheet">
 	 <style>
-     	.news {
-			overflow: auto;
-			height: 300px;	
-			border: 3px groove blue
- 		}
- 		p { font-size: xx-small }
- 		body{
- 			color: white;
- 			background: url("https://castlehillview.files.wordpress.com/2015/01/stock-market-3.jpg")
- 		}
 
  	 </style>
 
@@ -133,11 +125,38 @@
 <?php
     function displayHome(){
 ?>
-		<h1 class='page-header text-center'>CheckIt Stock Portfolio</h1>
+<!-- 
+		<div class='jumbotron'><h1 class='page-header text-center'>CheckIt Stock Portfolio</h1></div>
+ -->
+<!-- 
 		<form method="get">
 			<input class='btn btn-sm btn-default' type="submit" name="about" value="About CheckIt">
 		</form>
-
+ -->
+		<nav class="navbar navbar-fixed-top navbar-inverse">
+			  <div class="container">
+				<div class="navbar-header">
+				  <a class="navbar-brand">Checkit Stock Portfolio</a>
+				</div>
+				<div id="navbar" class="collapse navbar-collapse">
+				  <ul class="nav navbar-nav">
+				  
+					<li class="active"><a href='./index.php'>Home</a></li>
+					<?php 
+				 	 if (!isset($_COOKIE['email'] )) {
+						echo '<li><a href="./index2.php">Create Account</a></li>
+							<li><a href="./checkit_signin.php">Sign In</a></li>					
+							<li><a href="./about.php">About</a></li>';
+						}
+					else{
+						echo '<li><a href="./profile.php">Profile</a></li>';
+						}
+					?>
+				  </ul>
+				</div><!-- /.nav-collapse -->
+			  </div><!-- /.container -->
+			</nav><!-- /.navbar -->
+<!-- 
 		<?php
 		if (!isset($_COOKIE['email'])){ echo "
 
@@ -159,9 +178,11 @@
 		}
 
 		?>
+ -->
 
 		<h1><div id="rightwhite"> Your Chat Feed Today! </div></h1><br><br><br>
 		<div id="right">
+		
 		<div class="form-inline">
 			<input class="form-control"type="text" name="textBox" id="textBox" placeholder="Send a message..."/>	
 			<button class="form-control form-inline" onclick="sendMessage()">Send</button>
@@ -182,15 +203,19 @@
  		$nasdaq = "http://chart.finance.yahoo.com/t?s=%5eIXIC&lang=en-US&region=US&width=300&height=180";
 		$dow_jones = "http://chart.finance.yahoo.com/t?s=%5eDJI&lang=en-US&region=US&width=300&height=180";
 		$sp500 = "http://chart.finance.yahoo.com/t?s=%5eGSPC&lang=en-US&region=US&width=300&height=180";
+		echo "<div class='container'>";
      	echo "<img src=$nasdaq >";
      	echo "<img src=$dow_jones >";
       	echo "<img src=$sp500 >";
+      	echo "</div>";
       	?>
-	<div class='form-inline'>
+      	<div class='container'>
+		<div class='form-inline'>
 			<h1>Some important links</h1><br>
-			<a class='form-control' href="https://cs.bc.edu">Here is BC Comp Sci</a><br>
-			<a class='form-control' href="http://linkedin.com/in/jflah">Click here to network with me</a><br>
-			<a class='form-control' href="https://github.com/JFlah/Final-Project-CheckIt">Our github</a><br> </div>
+			<a class='form-control' href="https://cs.bc.edu">Here is BC Comp Sci</a>
+			<a class='form-control' href="http://linkedin.com/in/jflah">Click here to network with me</a>
+			<a class='form-control' href="https://github.com/JFlah/Final-Project-CheckIt">Our github</a>
+		</div></div>
 
 	<!--RSS below -->
 
@@ -201,29 +226,32 @@
 
 	$rss= new SimpleXMLElement(file_get_contents($rss_feed));
 	$title = $rss->channel->title;
-	echo "<h1 class='text-center'>$title</h1>";
+// 	echo "<div class='jumbotron'><h1>$title</h1></div>";
+	
+	echo "<br><div class=1col-xs-12 col-sm-9'>";
 	echo "<div class='container'>";
+    echo "<div class='row-offcanvas row-offcanvas-right'>";
 	$items = $rss->channel->item;
+	$i = 0;
+	echo "<div class='row'>";
 		foreach ($items as $item) {
-			echo "<div class='form-control news'>
+			if($i%3 == 0){
+				echo "</div><div class='row'>";
+			}
+			echo "<div class='col-xs-6 col-lg-4'>
 			<h2>$item->title</h2>\n";
 			echo '<a class="form-inline" href="' . $item->link . '">' . $item->title . '</a><br>';
 			echo $item->description . "<br><br>\n";
-			echo "<br></div>";
+			echo "</div>";
+			$i++;
 		}
-	echo "</div>";
+	echo "</div></div>
+	</div>
+	</div>";
 	}  
       
 function displayAbout(){
 ?>
-	<fieldset>CheckIt is a simple idea. Unlike the messy, intimidating web pages<br>
-	one will find on big banking websites meant to confuse and dazzle<br>
-	so they can steal your money, CheckIt is simple!<br><br>
-	Create your account, add your stocks. Once done, CheckIt will serve<br>
-	two basic functions for you. Buy, sell, and research. You can <br>
-	search prices, view the big indices, and keep track of your total value.<br>
-	I, for one, CheckIt every day!<br><br>
-	Copyright 2015 Bowditch, Chu, Flaherty & co.</fieldset>
 <?php
 }
 

@@ -1,7 +1,5 @@
 <?php
 include("name_ticker.php");
-
-
 $email = $_GET['email'];
 if (isset($_GET['search'])){
   $stock = $_GET['search'];
@@ -15,7 +13,6 @@ if (isset($_GET['sell_query'])){
 if (isset($_GET['cash'])){
   $cash = $_GET['cash'];
 }
-
 ?>
 
 <!DOCTYPE html>
@@ -30,6 +27,13 @@ if (isset($_GET['cash'])){
 <head>
      <meta charset="utf-8" />
      <title>CheckIt Stock Search</title>
+     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script> 
+	<link href="http://getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="http://getbootstrap.com/examples/signin/signin.css" rel="stylesheet">
+	 <link rel="stylesheet" type="text/css" href="CSS/check.css">
       <script type="text/javascript">
       
     function validateBuy(){
@@ -62,7 +66,20 @@ if (isset($_GET['cash'])){
     </script>
 </head>
 <body>
-
+<nav class="navbar navbar-fixed-top navbar-inverse">
+	  <div class="container">
+		<div class="navbar-header">
+		  <a class="navbar-brand">Checkit Stock Portfolio</a>
+		</div>
+		<div id="navbar" class="collapse navbar-collapse">
+		  <ul class="nav navbar-nav">
+			<li><a href="../profile.php">Profile</a></li>
+			<li class="active"><a href="./stocksearch.php">Suggestions</a></li>
+		  </ul>
+		</div><!-- /.nav-collapse -->
+	  </div><!-- /.container -->
+	</nav><!-- /.navbar -->
+	<h1></h1>
   <?php
   	global $ticker_name_arr;
     if( isset($stock)) {
@@ -129,15 +146,10 @@ if (isset($_GET['cash'])){
       
       preg_match_all($value_pattern, $content, $value_res);
       preg_match_all($change_pattern, $content, $change_res);
-
       $error_pattern = "!no result!";
-
       preg_match_all($error_pattern, $content, $error_res);
-
-
       if (!isset($value_res[0][0])) {
-        echo "Invalid stock ticker, please
-            <a href='http://cscilab.bc.edu/~oconnonx/CheckIt/profile.php'>Try again</a>";
+        echo "<div class='container'>Invalid stock ticker.</div>";
         return False;
       }
       else {
@@ -147,7 +159,6 @@ if (isset($_GET['cash'])){
         
         
         
-
   function stockInfo($stock_name) {
       $page = 'http://finance.yahoo.com/q?s=' . $stock_name;
       $content = file_get_contents($page);
@@ -157,17 +168,12 @@ if (isset($_GET['cash'])){
       
       preg_match_all($value_pattern, $content, $value_res);
       preg_match_all($change_pattern, $content, $change_res);
-
       $error_pattern = "!no result!";
-
       preg_match_all($error_pattern, $content, $error_res);
-
       //echo "Error res is " . $error_res . "<br>";
       //echo "error res [o][o] is " . $error_res[0][0] . "<br>";
-
       if (!isset($value_res[0][0])) {
-        die("Invalid stock ticker, please
-            <a href='http://cscilab.bc.edu/~oconnonx/CheckIt/index.php'>Try again</a>");
+        die("Invalid stock ticker.");
       }
       
         $change =  htmlentities($change_res[0][0]);
@@ -176,50 +182,41 @@ if (isset($_GET['cash'])){
         if($x===FALSE) {
           $change1 = "(" . $change1;
         }
-
     $price = htmlentities($value_res[1][0]);
     
       
         return array ($price,$change1);
     }
     
-    function searchDisplay($stock){
+function searchDisplay($stock){
       $tuple = stockInfo($stock);
       $stock = strtoupper($stock);
       echo "The stock $stock is $tuple[0] with a change of $tuple[1]<br><br>";
-
       $img_src = 'http://chart.finance.yahoo.com/t?s=' . $stock . '&lang=en-US®ion=US&width=600&height=360';
 		
       echo "<img src=$img_src >";
       echo "<br><a href='../profile.php'>Return to your Profile</a>";
 	$rss_feed = "http://feeds.finance.yahoo.com/rss/2.0/headline?s=".$stock."&region=US&lang=en-US";
-
 	$rss= new SimpleXMLElement(file_get_contents($rss_feed));
 	$title = $rss->channel->title;
 	echo "<h1 class='text-center'>$title</h1>";
-	echo "<div class='container'>";
 	$items = $rss->channel->item;
 		foreach ($items as $item) {
-			echo "<div class='form-control news'>
+			echo "<div>
 			<h2>$item->title</h2>\n";
 			echo '<a class="form-inline" href="' . $item->link . '">' . $item->title . '</a><br>';
 			echo $item->description . "<br><br>\n";
 			echo "<br></div>";
 		}
-	echo "</div>";
       
       }
-      
     function buyDisplay($stock,$email){
       $tuple = stockInfo($stock);
       $stock = strtoupper($stock);
       //echo $email;
-      echo "The stock $stock is $tuple[0] with a change of $tuple[1]";
-
+      echo "<div class='container'>The stock $stock is $tuple[0] with a change of $tuple[1]</div>";
       $img_src = 'http://chart.finance.yahoo.com/t?s=' . $stock . '&lang=en-US®ion=US&width=600&height=360';
-
       echo "<br><img src=$img_src >";
-
       $cash = $_GET['cash'];
       ?>
       <form method = "get" action = "checkit_ops.php" onsubmit='return validateBuy();'>
@@ -238,12 +235,9 @@ if (isset($_GET['cash'])){
     function sellDisplay($stock,$email,$stock_name){
       $tuple = stockInfo($stock);
       $stock = strtoupper($stock);
-      echo "The stock $stock is $tuple[0] with a change of $tuple[1]";
-
+      echo "<div class='container'>The stock $stock is $tuple[0] with a change of $tuple[1]</div>";
       $img_src = 'http://chart.finance.yahoo.com/t?s=' . $stock . '&lang=en-US®ion=US&width=600&height=360';
-
       echo "<br><img src=$img_src >";
-
       $previously_owned = false;
     foreach($stock_name as $name){
       if(strcmp($name, $stock) == 0){
@@ -251,8 +245,7 @@ if (isset($_GET['cash'])){
       }
     }
     if(!$previously_owned){
-      echo "<br>You cannot sell $stock because you do not own any shares.";
-      echo "<br><a href='../profile.php'>Return to your Profile</a>";
+      echo "<div class='container'><br>You cannot sell $stock because you do not own any shares.</div>";
       }
     else{
         ?>
@@ -271,7 +264,7 @@ if (isset($_GET['cash'])){
       }
       
       function suggestionsDisplay($stock_arr,$action,$email,$cash,$stocks){
-      	echo "Stock ticker not found. Did you mean: <br>";
+      	echo "<h1>Stock ticker not found. Did you mean: </h1>";
       	if($action == 1) $query = "buy_query";
       	if($action ==2) {
       		$cash = $cash . "&stocks=" . urlencode($stocks);
@@ -280,16 +273,15 @@ if (isset($_GET['cash'])){
       	foreach($stock_arr as $value) {
       			#echo $stocks;
       			if($action ==3) {
-      			$url = 'http://cscilab.bc.edu/~oconnonx/CheckIt/include/stocksearch.php?email='.$email.'&search='.$value[0].'&submit_search=Search';
+      			$url = 'http://cscilab.bc.edu/~churo/Proj/include/stocksearch.php?email='.$email.'&search='.$value[0].'&submit_search=Search';
   	  			}
   	  			else{
-  	  				$url = 'http://cscilab.bc.edu/~oconnonx/CheckIt/include/stocksearch.php?email='.$email."&cash=".$cash."&".$query."=".$value[0];
+  	  				$url = 'http://cscilab.bc.edu/~churo/Proj/include/stocksearch.php?email='.$email."&cash=".$cash."&".$query."=".$value[0];
   	  				}
   	  			#echo $url;
   	  			echo "<a href = $url> $value[1] -> $value[0] </a>";
   	  			echo "<br>";
   	  			}
-  	  	echo "<br><a href='../profile.php'>Return to your Profile</a>";
+//   	  	echo "<br><a href='../profile.php'>Return to your Profile</a>";
   	  		}
-
 ?>
