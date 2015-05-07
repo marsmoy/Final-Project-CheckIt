@@ -195,7 +195,7 @@ function searchDisplay($stock){
       $img_src = 'http://chart.finance.yahoo.com/t?s=' . $stock . '&lang=en-US®ion=US&width=600&height=360';
 		
       echo "<img src=$img_src >";
-      echo "<br><a href='../profile.php'>Return to your Profile</a>";
+      //echo "<br><a href='../profile.php'>Return to your Profile</a>";
 	$rss_feed = "http://feeds.finance.yahoo.com/rss/2.0/headline?s=".$stock."&region=US&lang=en-US";
 	$rss= new SimpleXMLElement(file_get_contents($rss_feed));
 	$title = $rss->channel->title;
@@ -273,10 +273,10 @@ function searchDisplay($stock){
       	foreach($stock_arr as $value) {
       			#echo $stocks;
       			if($action ==3) {
-      			$url = 'http://cscilab.bc.edu/~churo/Proj/include/stocksearch.php?email='.$email.'&search='.$value[0].'&submit_search=Search';
+      			$url = 'http://cscilab.bc.edu/~oconnonx/CheckIt/include/stocksearch.php?email='.$email.'&search='.$value[0].'&submit_search=Search';
   	  			}
   	  			else{
-  	  				$url = 'http://cscilab.bc.edu/~churo/Proj/include/stocksearch.php?email='.$email."&cash=".$cash."&".$query."=".$value[0];
+  	  				$url = 'http://cscilab.bc.edu/~oconnonx/CheckIt/include/stocksearch.php?email='.$email."&cash=".$cash."&".$query."=".$value[0];
   	  				}
   	  			#echo $url;
   	  			echo "<a href = $url> $value[1] -> $value[0] </a>";
